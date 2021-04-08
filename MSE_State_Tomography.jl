@@ -17,12 +17,13 @@ addprocs(4)
 	Para=zeros(2*Dim)
 	GuessIn[:,1]=Guess
 	Grad=zeros(Complex{Float64},Dim)
-    	Step=zeros(Complex{Float64},Dim)
-   	for i=1:It
+    Step=zeros(Complex{Float64},Dim)
+
+	for i=1:It
 		ck=b/(1*i+1)^r; ak=a/(1*i+1+A)^s
 		Step.=ck*rand([1 -1 1im -im],Dim) #Step for guess
 
-        @views GuessPl[:,i].=normalize(GuessIn[:,i]+Step) #Plus perturbation
+		@views GuessPl[:,i].=normalize(GuessIn[:,i]+Step) #Plus perturbation
 		@views GuessMi[:,i].=normalize(GuessIn[:,i]-Step) #Minus perturbation
 
         @views FunPl[:,i].=4*SE(Psi,GuessPl[:,i],Nex) #Plus Measure
