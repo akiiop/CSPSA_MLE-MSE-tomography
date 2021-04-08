@@ -141,57 +141,57 @@ function Graphic(NameArch)
 	end
 	close(File)
 
-x=1:It
-MeanRepe=mean(Data,dims=2)[:,1,:,:,:]
-MeanGuess=mean(MeanRepe,dims=2)[:,1,:,:]
-MeanMSE=mean(MeanGuess,dims=2)[:,1,:]
+	x=1:It
+	MeanRepe=mean(Data,dims=2)[:,1,:,:,:]
+	MeanGuess=mean(MeanRepe,dims=2)[:,1,:,:]
+	MeanMSE=mean(MeanGuess,dims=2)[:,1,:]
 
-MedianGuess=median(MeanRepe,dims=2)[:,1,:,:]
-MedianMSE=median(MeanGuess,dims=2)[:,1,:]
-VarGuess=var(MeanRepe,dims=2)[:,1,:,:]
-VarMSE=var(MeanGuess,dims=2)[:,1,:]
-MSEPVar=MeanMSE+VarMSE/2
-MSEMVar=MeanMSE-VarMSE/2
-GuessPVar=MeanGuess+VarGuess/2
-GuessMVar=MeanGuess-VarGuess/2
-
-
-rc("xtick",labelsize=24)
-rc("ytick",labelsize=24)
-
-iqrp=zeros(It,Tot) ;iqrm=zeros(It,Tot)
-    for l=1:Tot
-        for j=1:It
-            iqrp[j,l],iqrm[j,l]=quantile(MeanGuess[j,:,l],[.75 .25])
-        end
-    end
-
-Cols=2
-Rows=1
-fig,ax=subplots(nrows=Rows,ncols=Cols,figsize=(25,13))
-Colors=["deepskyblue" "tomato" "gold" "mediumpurple" "greenyellow"]
-
-Points=[ "1" "o" "^"]
-
-for k=1:3
-	ax[1].loglog(x,MeanMSE[:,k],color=Colors[k],label="N=10^"*string(k+2),lw=.3)
-	ax[2].loglog(x,MedianMSE[:,k],color=Colors[k],label="N=10^"*string(k+2),lw=.3)
-        ax[1].loglog(x,GMB[k,:],color=Colors[k])
-        ax[2].loglog(x,GMB[k,:],color=Colors[k])
-        ax[1].fill_between(x,MSEPVar[:,k],MSEMVar[:,k],color=Colors[k],alpha=.5)
-        ax[2].fill_between(x,iqrp[:,k],iqrm[:,k],color=Colors[k],alpha=.5)
-end
-    ax[1].grid()
-    ax[1].legend(fontsize=24)
-    ax[2].grid()
-    ax[2].legend(fontsize=24)
+	MedianGuess=median(MeanRepe,dims=2)[:,1,:,:]
+	MedianMSE=median(MeanGuess,dims=2)[:,1,:]
+	VarGuess=var(MeanRepe,dims=2)[:,1,:,:]
+	VarMSE=var(MeanGuess,dims=2)[:,1,:]
+	MSEPVar=MeanMSE+VarMSE/2
+	MSEMVar=MeanMSE-VarMSE/2
+	GuessPVar=MeanGuess+VarGuess/2
+	GuessMVar=MeanGuess-VarGuess/2
 
 
-fig.text(0.5, 0.01 , "k",ha="center", size=45)
-fig.text(0.08,.5,"Inf",ha="center",rotation="vertical", size=45)
+	rc("xtick",labelsize=24)
+	rc("ytick",labelsize=24)
 
-fig.savefig("meanmedian"*string(Dim)*".pdf")
-clf()
+	iqrp=zeros(It,Tot) ;iqrm=zeros(It,Tot)
+	    for l=1:Tot
+	        for j=1:It
+	            iqrp[j,l],iqrm[j,l]=quantile(MeanGuess[j,:,l],[.75 .25])
+	        end
+	    end
+
+	Cols=2
+	Rows=1
+	fig,ax=subplots(nrows=Rows,ncols=Cols,figsize=(25,13))
+	Colors=["deepskyblue" "tomato" "gold" "mediumpurple" "greenyellow"]
+
+	Points=[ "1" "o" "^"]
+
+	for k=1:3
+		ax[1].loglog(x,MeanMSE[:,k],color=Colors[k],label="N=10^"*string(k+2),lw=.3)
+		ax[2].loglog(x,MedianMSE[:,k],color=Colors[k],label="N=10^"*string(k+2),lw=.3)
+	        ax[1].loglog(x,GMB[k,:],color=Colors[k])
+	        ax[2].loglog(x,GMB[k,:],color=Colors[k])
+	        ax[1].fill_between(x,MSEPVar[:,k],MSEMVar[:,k],color=Colors[k],alpha=.5)
+	        ax[2].fill_between(x,iqrp[:,k],iqrm[:,k],color=Colors[k],alpha=.5)
+	end
+	    ax[1].grid()
+	    ax[1].legend(fontsize=24)
+	    ax[2].grid()
+	    ax[2].legend(fontsize=24)
+
+
+	fig.text(0.5, 0.01 , "k",ha="center", size=45)
+	fig.text(0.08,.5,"Inf",ha="center",rotation="vertical", size=45)
+
+	fig.savefig("meanmedian"*string(Dim)*".pdf")
+	clf()
 
 end
 
